@@ -8,7 +8,9 @@
     {{-- <meta name="viewport" content="width=device-width, initial-scale=1"> --}}
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Management voluntari @yield('title')</title>
-    <!-- CHANGE THIS TITLE FOR EACH PAGE -->
+    
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">  
 
     <!-- Bootstrap -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,6 +19,8 @@
 
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> 
      
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
     <link rel="stylesheet" href="/css/style.css">
 
     {{-- <link rel="stylesheet" href="{{ elixir('css/app.css') }}"> --}}
