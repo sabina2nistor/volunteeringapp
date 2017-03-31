@@ -6,19 +6,24 @@
 </head>
 
 <body>
-    {{-- @include('partials/_nav') --}}
-        <!-- Default Bootstrap Navbar -->
+      
+        <!-- Navbar and sidebar -->
         
+    
+    
+        <div id="page-content-wrapper" >
 
-        <div class="container">
+            
 
-         @include('partials/_messages') 
+             @include('partials/_navsidebar')  
 
-         @yield('container')
+             @include('partials/_messages') 
 
-         @include('partials/_footer')    
+             @yield('container')
 
+             @include('partials/_footer')    
 
+           
         </div>
         <!-- end of .container -->
     @include('partials/_javascripts') 
