@@ -30,6 +30,6 @@ class User extends Authenticatable
     ];
 
      public function tasks(){ 
-        return $this->belongsToMany('App\Task', 'user_task', 'task_id'); 
+        return $this->belongsToMany('App\Task', 'user_task'); 
     }
 }
