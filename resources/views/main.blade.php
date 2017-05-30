@@ -5,15 +5,16 @@
   @include('partials/_head')
 </head>
 
-<body>
+<body >
       
-        <!-- Navbar and sidebar -->
         
     
-    
+    <div id="app">
+        
         <div id="page-content-wrapper" >
 
             
+        <!-- Navbar and sidebar -->
 
              @include('partials/_navsidebar')  
 
@@ -26,7 +27,9 @@
            
         </div>
         <!-- end of .container -->
-    @include('partials/_javascripts') 
+    </div>
+    @include('partials/_javascripts')
+     {{-- <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>  --}}
     @yield('scripts')
 
   </body>

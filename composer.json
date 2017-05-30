@@ -10,7 +10,8 @@
         "laravelcollective/html":"^5.3.0",
         "mews/purifier": "^2.0",
         "intervention/image": "^2.3",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "consoletvs/charts": "4.*"
         
     },
     "require-dev": {

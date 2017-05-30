@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatusesTable extends Migration
+class CreateDepartmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class CreateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->text('description');
+            $table->integer('association_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('association_id')->references('id')->on('associations')->onDelete('cascade');
         });
     }
 
@@ -27,6 +31,7 @@ class CreateStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropForeign(['association_id']);
+        Schema::dropIfExists('departments');
     }
 }

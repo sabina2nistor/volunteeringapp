@@ -19,8 +19,17 @@ class CreateProjectsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('body');
+            $table->string('slug')->unique();
+            $table->string('image')->nullable();
+            $table->integer('department_id')->unsigned();
             $table->date('begin_date');
+            $table->date('end_date');
             $table->timestamps();
+
+
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
+
+   
         });
     }
 
@@ -31,6 +40,7 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
+        Schema::dropForeign(['department_id']);
         Schema::dropIfExists('projects');
     }
 }

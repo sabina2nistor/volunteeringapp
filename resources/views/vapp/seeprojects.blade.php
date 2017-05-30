@@ -4,31 +4,56 @@
 
 @section('container')
 
-<div class="container-fluid">
-	<div id="main">
-	<h2 style="text-align: center"> Proiecte propuse</h2>
-	<br>
 
-		<div class="container-2">
-			<?php $i = 0; ?>
-			@foreach($projects as $project)
-			  <?php $i++; ?>
-			
-			  <div class="container-2-box">
-			    <h3>{{ $project->title }}</h3>
-			    <p>{{ substr(strip_tags($project->body), 0, 300)}}{{ strlen(strip_tags($project->body)) >300 ? "..." : ""}}</p>
-			    <a href="{{ url('vapp/'.$project->slug) }}" class="btn btn-success">Mai mult..</a>  
-			  </div>
+<div id="main">
 
-		@if($i % 3 == 0)
-			</div><br>
-			<div class="container-2">
-		@endif
+	<div class="container">
+		{{-- <img src="{{ asset('images/bg-projects.jpg') }} "> --}}
+		<div class="row">
+		<div class="col-md-4 ">
+			<h1 > Proiecte propuse</h1>
+		</div>
 
-			@endforeach
+		<div class="col-md-3 col-md-offset-4">
+				<form method="GET" > 
+					
+		            <div class="input-group">
+		    			<input class="form-control" placeholder="Search..." id="query" name="search" value="" type="text">
+		                <div class="input-group-btn">
+		                   	<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+		                </div>
+		    		</div>
+				</form>
 			</div>
+			<br>
+		</div>
+		<hr>
+
+				
 
 
+		@foreach ($projects->chunk(3) as $chunk)
+			<div class="row">
+				@foreach ($chunk as $project)
+					<div class="col-xs-4">
+						<h3>{{ $project->title }}</h3>
+						{{-- <h5>Durata: {{ date('M j, Y H:i',strtotime($project->begin_date)) }}</h5>  - {{ date('M j, Y H:i',strtotime($project->begin_date)) }}</h5> --}}
+						<p>{{ substr(strip_tags($project->body), 0, 300)}}{{ strlen(strip_tags($project->body)) >300 ? "..." : ""}}</p>
+						<a href="{{ url('vapp/'.$project->slug) }}" class="btn btn-success">Mai mult..</a> 
+						<hr>
+					</div>
+				@endforeach
+			</div>
+		@endforeach
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="text-center">
+			{!! $projects->links() !!}
+			</div>
+			
+		</div>
+	</div>
 		
 	</div>
 </div>

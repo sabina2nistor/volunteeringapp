@@ -12,5 +12,16 @@ class Department extends Model
     {
     	return $this->hasMany('App\Project');
     }
+
+    public function users()
+    {
+    	return $this->hasMany('App\User');
+    }
+
+    public function association(){ //not associations
+
+    	return $this->belongsTo('App\Association', 'association_id'); 
+    }
+
 }
 

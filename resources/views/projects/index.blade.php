@@ -7,6 +7,7 @@
 <div id="main">
 	<div class="container">
 		<div class="row">
+		@if (auth()->user()->admin === 1)
 			<div class="col-md-7">
 				<a href="{{ route('projects.index') }}" style="font-size: 40px">Toate proiectele</a>
 			</div>
@@ -14,7 +15,7 @@
 				<form method="GET" > 
 					
 		            <div class="input-group">
-		    			<input class="form-control" placeholder="Search..." id="query" name="search" value="" type="text">
+		    			<input class="form-control" placeholder="Search titlu..." id="query" name="search" value="" type="text">
 		                <div class="input-group-btn">
 		                   	<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
 		                </div>
@@ -39,6 +40,7 @@
 						<th class="success">#</th>
 						<th class="success">Titlu</th>
 						<th class="success">Descriere</th>
+						<th class="success">Departament</th>
 						<th class="success">Creat la data</th>
 						<th class="success"></th>
 					</thead>
@@ -47,11 +49,13 @@
 							<tr>
 								<th>{{ $project->id }}</th>
 								<td>{{ $project->title }}</td>
+								<td>{{ $project->name }}</td>
 								<td>{{ substr(strip_tags($project->body), 0, 50)}}{{ strlen(strip_tags($project->body)) >50 ? "..." : ""}}</td>
 								<td>{{ date('M j, Y H:i',strtotime($project->created_at)) }}</td>
 								<td>
 									<a href="{{ route('projects.show',$project->id) }}" class="btn btn-default btn-sm">Vizualizeaza</a>
 									<a href="{{ route('projects.edit',$project->id) }}" class="btn btn-default btn-sm">Editeaza</a>
+									<a href="{{ url('vapp/'.$project->slug.'/tasks-create/') }}" class="btn btn-warning btn-sm">Adauga task</a>
 								</td>
 
 
@@ -68,6 +72,9 @@
 				
 			</div>
 		</div>
+
+		
+		@endif
 	</div>
 </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use App\Department;
+use App\Association;
 use Session;
 
 class DepartmentController extends Controller
@@ -18,10 +19,11 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
+        $association = Association::where('id','=', $id)->first();
         $departments = Department::all();
-        return view('departments.index', compact('projects'))->withDepartments($departments);
+        return view('departments.index', compact('projects'))->withDepartments($departments)->withAssociation($association);
     }
 
     /**
@@ -40,18 +42,22 @@ class DepartmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $this->validate($request, array(
             'name'=>'required|max:255',
-            'description'=>'sometimes'
+            'description'=>'sometimes',
             ));
+
+        $association = Association::where('id','=', $id)->first()->id;
 
         //store the database
         $department = new Department;
+
         $department->name = $request->name;
         $department->description =$request->description;
-        
+        $department->association_id  = $association;
+
         $department->save();
 
         Session::flash('success','Departamentul a fost adaugat cu succes');

@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password','department_id','admin', 'approved'
     ];
 
     /**
@@ -29,7 +29,33 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getRememberToken()
+{
+    return $this->remember_token;
+}
+
+public function setRememberToken($value)
+{
+    $this->remember_token = $value;
+}
+
+public function getRememberTokenName()
+{
+    return 'remember_token';
+}
+
      public function tasks(){ 
-        return $this->belongsToMany('App\Task', 'user_task', 'task_id'); 
+
+        return $this->belongsToMany('App\Task', 'user_task'); 
+    }
+
+    public function project()
+    {
+        return $this->hasOne('App\Project');
+    }
+
+     public function department(){ //not projects
+
+        return $this->belongsTo('App\Department'); 
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddImageColToProjects extends Migration
+class AddColIsManagerToTasks extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddImageColToProjects extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->string('image')->nullable()->after('slug');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->boolean('isManager')->default(0)->after('project_id');
         });
     }
 
@@ -25,8 +25,8 @@ class AddImageColToProjects extends Migration
      */
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('image');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropColumn('isManager');
         });
     }
 }

@@ -4,6 +4,7 @@
 @section('title', '| Editeaza Proiectul')
 
 @section('stylesheets')
+	{!! Html::style('css/select2.min.css') !!}
 	<script src="//cloud.tinymce.com/stable/tinymce.min.js"></script>
 
 	<script>
@@ -92,11 +93,11 @@
 						{{ Form::label('department_id', 'Departament:', ['class' => 'form-spacing-top'])  }}
 						{{ Form::select('department_id', $departments, null, ['class' => 'form-control']) }}
 
-						{{-- {{ Form::label('tags', "Tags:", ['class' => 'form-spacing-top'])  }}
-						{{ Form::select('tags[]', $tags, null, ['class' => 'form-control select2-multi', 'multiple' => 'multiple']) }}--}}
+						{{ Form::label('tags', "Tags:", ['class' => 'form-spacing-top'])  }}
+						{{ Form::select('tags[]', $tags, null, ['class' => 'form-control select2-multi', 'multiple' => 'multiple']) }}
 
 
-						{{ Form::label('featured_image', 'Upload an image', ['class' => 'form-spacing-top']) }}
+						{{ Form::label('featured_image', 'Incarca o imagine', ['class' => 'form-spacing-top']) }}
 						{{ Form::file('featured_image') }} 
 						
 						{{ Form::label('body', 'Descrierea proiectului:') }}
@@ -104,6 +105,9 @@
 
 					 	{{ Form::label('begin_date', 'Data de inceput:') }}
 					 	{{ Form::text('begin_date',null, array('class' => 'date form-control','required' => '')) }}
+
+					 	{{ Form::label('end_date', 'Data de sfarsit:') }}
+					 	{{ Form::text('end_date',null, array('class' => 'date form-control','required' => '')) }}
 				 	</div>
 
 
@@ -113,6 +117,12 @@
 									<dt>Incepand cu data:</dt> 
 									<dd>{{ date('M j, Y ', strtotime($project->begin_date)) }}</dd> 
 								</dl>
+
+								<dl class="dl-horizontal"> 
+									<dt>Data de sfarsit:</dt> 
+									<dd>{{ date('M j, Y ', strtotime($project->end_date)) }}</dd> 
+								</dl>
+
 								<dl class="dl-horizontal"> 
 									<dt>Creat la data:</dt> 
 									<dd>{{ date('M j, Y h:i:sa', strtotime($project->created_at)) }}</dd> 
@@ -151,6 +161,14 @@
 
          });  
 
-    </script>  
+    </script> 
+
+    {!! Html::script('js/select2.min.js') !!}
+	<script type="text/javascript">
+		
+		$('.select2-multi').select2();
+		$('.select2-multi').select2().val( {!! json_encode($project->tags->pluck('id')) !!} ).trigger('change');
+	</script>
+
     <script src="http://cloud.tinymce.com/stable/tinymce.min.js?apiKey=d225gurfclcqnz1m0qfp4aqu8uu6nfb1tap5mrgdkyv63kq7"></script>
 @stop

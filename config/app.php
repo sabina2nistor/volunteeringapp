@@ -165,6 +165,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -180,6 +181,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
 
     ],
 
@@ -232,6 +234,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
     ],
 
 ];

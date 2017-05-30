@@ -7,7 +7,7 @@
 	<div id="main">
     	<div class="container">
 			<div class="row">
-				<div class="col-md-6 col-md-offset-2">
+				<div class="col-md-8">
 					<h1>Departamente</h1>
 					{{-- <table class="table">
 						<thead>
@@ -28,7 +28,7 @@
 							@endforeach
 						</tbody>
 					</table> --}}
-					@foreach($departments as $department)
+					{{-- @foreach($departments as $department)
 						<div class="panel-group">
 							<div class="panel panel-success">
 						      <div class="panel-heading">{{ $department->name }}</div>
@@ -36,13 +36,28 @@
 						    </div>
 						</div>
 					@endforeach
+ --}}
+					@foreach ($association->departments->chunk(3) as $chunk)
+					    <div class="row">
+					        @foreach ($chunk as $department)
+					            <div class="col-xs-4">{{-- {{ $department->name }} --}}
+					            	<div class="panel-group">
+										<div class="panel panel-success">
+									      <div class="panel-heading">{{ $department->name }}</div>
+									      <div class="panel-body">{{ $department->description }}</div>
+									    </div>
+									</div>
+					            </div>
+					        @endforeach
+					    </div>
+					@endforeach
 				</div> <!--end of col-md-8 -->
 
 
 
 				<div class="col-md-3">
 					<div class="well">
-						<form method="POST" action="{{ route('departments.store') }}">
+						<form method="POST" action="{{ route('departments.store',$association->id) }}">
 							 <input type="hidden" name="_token" value="{{ csrf_token() }}"> 
 							<h2>Departament nou</h2>
 							

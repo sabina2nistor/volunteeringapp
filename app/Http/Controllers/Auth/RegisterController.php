@@ -6,6 +6,14 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
+use App\Association;
+use App\Department;
+use Response;
+use Hash;
+
 
 class RegisterController extends Controller
 {
@@ -39,6 +47,60 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    public function index()
+    {
+            
+        $associations = Association::pluck('name', 'id');
+       
+        return view('auth.register')->withAssociations($associations);
+    }
+
+
+    public function indexAjax($id)
+    {
+
+        $departments = Department::where("association_id",$id)->get();
+        return json_encode($departments);
+
+    }
+
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        if( $request->has('admin')) {
+
+            // $user = new User();
+
+            // $user->admin = 1;
+            // $user->name              = $request->name;
+            // $user->email        = $request->email;
+            // $user->password          = Hash::make($request->password);
+            // $user->department_id          = 2;
+            // $user->approved = 1;
+
+            // $user->save();
+
+            event(new Registered($user= $this->createAdmin($request->all())));
+
+        }
+        else{
+            event(new Registered($user = $this->create($request->all())));
+        }
+        
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -51,7 +113,10 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'department_id' => 'sometimes',
+
         ]);
+
     }
 
     /**
@@ -66,6 +131,19 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'department_id' => $data['department_id'],
+        ]);
+    }
+
+    protected function createAdmin(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'department_id' => 2,
+            'admin' => 1,
+            'approved' => 1,
         ]);
     }
 }

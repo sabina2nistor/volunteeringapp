@@ -13,6 +13,15 @@
 					<img src="{{ asset('images/' . $project->image) }}" alt=" " height="300" width="700" />
 
 					<p class="lead">{!! $project->body !!}</p>
+
+					<hr>
+
+					<div class="tags">
+						@foreach($project->tags as $tag)
+							<span class="label label-default">{{ $tag->name }}</span>
+						@endforeach
+					</div>
+
 					</div>
 				</div>
 			
@@ -30,6 +39,11 @@
 							<p>{{ date('M j, Y ', strtotime($project->begin_date)) }}</p> 
 						</dl>
 
+						<dl class="dl-horizontal"> 
+							<label>Data de sfarsit:</label> 
+							<p>{{ date('M j, Y ', strtotime($project->end_date)) }}</p> 
+						</dl>
+
 						<dl class="dl-horizontal">
 							<label>Creat la data:</label>
 							<p>{{ date('M j, Y H:i',strtotime($project->created_at)) }}</p>
@@ -39,6 +53,8 @@
 							<label>Ultima modificare:</label>
 							<p>{{ date('M j, Y H:i',strtotime($project->updated_at)) }}</p>
 						</dl>
+
+
 
 						<hr>
 						

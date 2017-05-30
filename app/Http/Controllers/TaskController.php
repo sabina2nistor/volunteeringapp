@@ -6,44 +6,50 @@ use Illuminate\Http\Request;
 use App\Project;
 use App\Task;
 use App\User;
-use Auth;
+
+use Session;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 class TaskController extends Controller
 {
- //    public function __construct(Task $task)
- // {
- //    $this->task = $task;
- //    $this->id = $this->getID();
- // }
+ 
+     public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function getIndex($slug){
         //fetch on the db based on slug
         $project = Project::where('slug','=', $slug)->first();
         $tasks = Task::all();
+        $user = Auth::user()->id;
         
-        //return a view
-        return view('tasks.index')->withProject($project)->withTasks($tasks);
+        $taskDistArray = DB::table('user_task')->select(DB::raw('task_id'))->where('user_id',$user)->get()->toArray();
+        //dd($taskDistArray);
+
+        $taskDist = [];
+        for ($i=0; $i < count($taskDistArray); $i++) { 
+            $taskDist[$i] = $taskDistArray[$i]->task_id;
+        }
+        
+        return view('tasks.index', ['taskDist' => $taskDist])->withProject($project)->withTasks($tasks);
     }
 
-    public function joinTask(Request $request, $taskId)
+    public function joinTask(Request $request, Task $task)
     {
-         $task = Task::find($taskId);
-         $userId = Auth::user()->id;
-         $user = User::find($userId);
-       //  $users = User::all();
-       // // $user = Auth::user();
-       //  // die($userId);
-         // $task->users()->save($user);
-         // $user->tasks()->save($task);
+        
+        // $taskDist = DB::table('user_task')->select(DB::raw('task_id'))->get()->toArray();
+        // dd($taskDist);
+        
+        
+        $user = Auth::user();
 
-          Task::find($taskId)->users()->attach($userId);
-            
-            //$tasks = $this->request->input('tasks', []);
-         
-            //$user->tasks()->attach($tasks);
+        $task->users()->attach($user);
 
         Session::flash('success','task asignat cu success');
 
-        return redirect()->route('tasks.index')->withProject($project)->withTasks($tasks);
+        return redirect()->back();
     }
 
     /**
@@ -51,9 +57,11 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($slug)
     {
-        //
+        $project = Project::where('slug','=', $slug)->first();
+        $tasks = Task::all();
+        return view('tasks.create')->withTasks($tasks)->withProject($project);
     }
 
     /**
@@ -62,28 +70,33 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request, $slug)
+    {   
+
         $this->validate($request, array(
             'name'         =>'required|max:255',
-            'description'  =>'required|min:5|max:2000'
+            'description'  =>'required|min:5|max:2000',
+            
             
             ));
 
-        $project = Project::find($project_id);
+
+        $project = Project::where('slug','=', $slug)->first()->id;
+       
+        //$project = Project::find($project_id);
 
         $task = new Task;
 
         $task->name        = $request->name;
         $task->description  = $request->description;
-
-        $task->project()->associate($project);
+        $task->project_id  = $project;
+        
 
         $task->save();
 
         Session::flash('success','task success');
 
-        return redirect()->route('tasks.single', [$project->slug]);
+        return redirect()->back();
     }
 
     /**
